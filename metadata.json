@@ -1,0 +1,6 @@
+{
+  "name": "Prompt Refiner",
+  "description": "Mobile-first personal creative utility for transforming image prompts into clean, compact, Google Flow-compatible prompts with strict character name suppression.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
