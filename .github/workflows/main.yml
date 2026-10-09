@@ -23,20 +23,22 @@ jobs:
         with:
           gradle-version: '9.3.1'
 
-      - name: Generate debug keystore if missing
+      - name: Generate and verify debug keystore
+        working-directory: ${{ github.workspace }}
         run: |
-          if [ ! -f debug.keystore ]; then
-            keytool -genkeypair \
-              -v \
-              -keystore debug.keystore \
-              -storepass android \
-              -alias androiddebugkey \
-              -keypass android \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -dname "CN=Android Debug,O=Android,C=US"
-          fi
+          set -e
+          keytool -genkeypair \
+            -keystore "$GITHUB_WORKSPACE/debug.keystore" \
+            -storepass android \
+            -alias androiddebugkey \
+            -keypass android \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US" \
+            -noprompt
+          test -f "$GITHUB_WORKSPACE/debug.keystore"
+          ls -l "$GITHUB_WORKSPACE/debug.keystore"
 
       - name: Build debug APK
         run: gradle assembleDebug
