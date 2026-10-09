@@ -40,9 +40,15 @@ jobs:
           test -f "$GITHUB_WORKSPACE/debug.keystore"
           ls -l "$GITHUB_WORKSPACE/debug.keystore"
 
+       
+      - name: Check debug signing configuration
+        run: |
+          grep -R -n "debugConfig" app build.gradle.kts settings.gradle.kts gradle || true
+          grep -n -A 5 -B 5 'debug {' app/build.gradle.kts
+
       - name: Build debug APK
-        run: gradle assembleDebug
-        
+        run: gradle assembleDebug --no-configuration-cache --rerun-tasks
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
